@@ -1,50 +1,18 @@
-import { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
 import BandAdd from './components/BandAdd'
 import BandList from './components/BandList'
+import configSocketRedux  from './services/configSocketRedux'
+import {useSelector} from 'react-redux'
+import loadBands from './services/loadBands'
+import ChartBand from './components/ChartBand'
 
 
-const connectScoketServer =()=>{
-  const socket = io('http://localhost:5000',{
-    transports:['websocket']
-  })
-  return socket
-}
 
 function App() {
 
-  const [online,setOnline]= useState(false)
-  const [socket] = useState(connectScoketServer())
-  const [bands, setBands] = useState([])
+  const {online} = useSelector(state=>state.socket)
+  configSocketRedux('http://localhost:5000/')
+  loadBands()
 
-  useEffect(()=>{
-    setOnline(socket.connected)
-  },[socket])
-
-  useEffect(()=>{
-
-    socket.on('connect',()=>{
-      setOnline(true)
-    })
-
-  },[socket])
-  
-  useEffect(()=>{
-
-    socket.on('disconnect',()=>{
-      setOnline(false)
-    })
-
-  },[socket])
-
-  useEffect(()=>{
-
-    socket.on('current-bands',(bands)=>{
-      console.log(bands)
-      setBands(bands)
-    })
-
-  },[socket])
 
 
   return (
@@ -56,6 +24,7 @@ function App() {
       </div>
       <hr/>
       <div>
+        <ChartBand/>
         <table className="w-full text-center">
           <thead>
             <tr>
@@ -65,10 +34,10 @@ function App() {
           </thead>
           <tbody>
             <td>
-              <BandList bands={bands} socket={socket} setBands={setBands}/>
+              <BandList />
             </td>
             <td>
-              <BandAdd socket={socket}/>
+              <BandAdd />
             </td>
           </tbody>
         </table>

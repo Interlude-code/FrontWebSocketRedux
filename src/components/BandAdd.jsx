@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-const BandAdd = ({socket}) => {
+const BandAdd = () => {
 
+  const {socket} = useSelector(state=>state.socket)
   const [value, setValue] = useState("")
 
   const submiteForm=(e)=>{

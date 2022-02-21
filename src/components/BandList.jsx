@@ -1,12 +1,13 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateNameBand } from '../redux/actions/bandActions'
 
 
+const BandList = () => {
 
-
-const BandList = ({bands , socket ,setBands}) => {
-
-
+  const {socket} = useSelector(state=>state.socket)
+  const {bands} = useSelector(state=>state.bands)
 
   return (
     <>
@@ -22,7 +23,7 @@ const BandList = ({bands , socket ,setBands}) => {
         <tbody>
           {bands.map((band)=>{
             return(
-              <CrearRows key={band.id} band={band} socket={socket} setBands={setBands} bands={bands}/>
+              <CrearRows key={band.id} band={band} socket={socket} bands={bands}/>
             )
           })}
      
@@ -32,7 +33,8 @@ const BandList = ({bands , socket ,setBands}) => {
     </>
   )
 }
-const CrearRows=({band , socket,setBands , bands })=>{
+const CrearRows=({band , socket , bands })=>{
+  const dispatch = useDispatch()
 
   const cambioNombre=(id,name)=>{
     socket.emit('change-name',({
@@ -42,14 +44,7 @@ const CrearRows=({band , socket,setBands , bands })=>{
   }
 
   const cambioString=(id, name)=>{
-    setBands(
-      bands.map((band)=>{
-        if(band.id===id){
-          band.name=name
-        }
-        return band
-      })
-    )
+    dispatch(updateNameBand (id,name))
   }
 
   const aumentarVoto=(id)=>{

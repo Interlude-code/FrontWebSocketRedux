@@ -1,0 +1,8 @@
+const actionsTypesBand = {
+    LOADING_BANDS: 'LOADING_BANDS',
+    LOAD_SUCCESS_BANDS: 'LOAD_SUCCESS_BANDS',
+    LOAD_FAILURE_BANDS: 'LOAD_FAILURE_BANDS',
+    UPDATE_NAME_BAND:'UPDATE_NAME_BAND'
+  }
+  
+  export default actionsTypesBand
